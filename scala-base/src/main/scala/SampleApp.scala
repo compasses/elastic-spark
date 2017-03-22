@@ -22,5 +22,7 @@ object SampleApp {
     val sum2 = distData.map(new Operation().multiply).sum()
     println(sum2)  // 30.0
 
+    
+
   }
 }
