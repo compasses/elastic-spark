@@ -20,6 +20,7 @@ scalacOptions ++= Seq(
 )
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % "2.0.1" % "compile",
-  "org.apache.spark" % "spark-streaming_2.11" % "2.1.0" % "compile"
+  "org.apache.spark" % "spark-streaming_2.11" % "2.1.0" % "compile",
+  "org.apache.spark" % "spark-mllib_2.11" % "2.1.0" % "compile"
 )
 
