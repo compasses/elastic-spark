@@ -7,8 +7,12 @@
 当然现在开始再研究理论已经不合适了，这些是学校里的研究生和博士生所要研究的，目前自己更关注大数据处理的技术、框架等等。这一周就折腾了Hadoop和Spark，还有语言Scala。还有Flink，貌似用的也很多。主要集中学习Spark、Flink，也发现ElasticSearch可以和Hadoop、Spark、Flink集成起来，后面可以接上Grafana做实时展示。
 
 ### Spark
+包含Spark Stream， Spark SQL和SparkML。Spark使用起来比较灵活，可以安装单机或集群，也很容易和Hadoop集成使用。另外就是速度上，Spark比Hadoop的MapReduce更加高效，但是使用内存比较多，真实场景下需要不少的调优手段。
+
+Spark是内存计算，有个重要的设计理念就是RDD，是一种不可变的数据结构，代表一个数据集。通过RDD进行计算。然后会得出DAG，利用DAG Spark可以高效的调度任务。有时间深入研究，目前大概知道怎么进行计算和怎么用即可。
 
 ### Flink
+面向实时流的计算框架。
 
 
 ### HDFS
