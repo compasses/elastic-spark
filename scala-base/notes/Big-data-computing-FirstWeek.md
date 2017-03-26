@@ -12,7 +12,8 @@
 Spark是内存计算，有个重要的设计理念就是RDD，是一种不可变的数据结构，代表一个数据集。通过RDD进行计算。然后会得出DAG，利用DAG Spark可以高效的调度任务。有时间深入研究，目前大概知道怎么进行计算和怎么用即可。
 
 ### Flink
-面向实时流的计算框架。
+面向实时流的计算框架。在处理流式数据时有着独特的优势，[这个PPT](https://www.slideshare.net/KostasTzoumas/apache-flink-at-strata-san-jose-2016)有比较详细的说明。
+
 
 
 ### HDFS
@@ -60,3 +61,6 @@ HDFS有NameNode和DataNode之分，NameNode保存了元数据，就是那些复�
 Scala语言，基于JVM，是函数式编程语言。非常的灵活多变，可以用最少的代码实现功能。就像它所倡导的**Less Code, Less Mistake**，Scala在大数据处理领域会独放异彩。而语言也是不断进化的，好的特性就会相互借鉴。
 
 学习Scala的首要原因也是Spark用Scala实现的，为后面深入研究做好准备吧。安装一个Scala的插件在IntelliJ上，开发很方便。可以方便的建立基于sbt的项目。
+
+一些有用的命令：
+1.  scalac -Xprint:jvm

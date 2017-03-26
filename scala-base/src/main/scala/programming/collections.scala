@@ -28,4 +28,16 @@ object collections extends App {
   val a1 = Array(1, 2, 3)
 
   println(Vector(1, 2, 3, 4, 5))
+
+
+  trait Service
+  def make() = new Service {
+    def getId = 123
+  }
+
+  class Covariant[+A]
+  val cv: Covariant[AnyRef] = new Covariant[String]
+  val cv2: Covariant[String] = new Covariant[AnyRef]
+
+
 }
