@@ -1,5 +1,5 @@
 
-## 大数据&分布式计算
+## 大数据&分布式计算&Scala
 
 ### 大数据
 互联网技术的繁荣，助推了大数据处理技术的演进。目前很多公司都会说说大数据、数据挖掘、机器学习等。特别最近几年AI领域又开始风气浪涌，所以有时间还是要研究一下。平时有时间就会跟踪看看最近领域的发展和最新动向。自己也想持续的研究这一领域，毕竟自己研究生期间做过图像检索、语义理解方向的研究。开始看看是不是有新的突破。
@@ -64,3 +64,10 @@ Scala语言，基于JVM，是函数式编程语言。非常的灵活多变，可
 
 一些有用的命令：
 1.  scalac -Xprint:jvm
+
+一些比较好的在线资源：
+1. [Scala 课堂!](https://twitter.github.io/scala_school/zh_cn/index.html)
+2. [Scalac](http://blog.scalac.io/tags/Scala/)
+3. [Scala Puzzlers](http://scalapuzzlers.com/#pzzlr-001)
+
+

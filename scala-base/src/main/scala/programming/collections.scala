@@ -37,7 +37,31 @@ object collections extends App {
 
   class Covariant[+A]
   val cv: Covariant[AnyRef] = new Covariant[String]
-  val cv2: Covariant[String] = new Covariant[AnyRef]
 
+  class Animal { val sound = "rustle" }
+  class Bird extends Animal { override val sound = "call" }
 
+  class Chicken extends Bird { override val sound = "cluck" }
+  val getTweet: (Bird => String) = ((a: Animal) => a.sound )
+  val hatch: (() => Bird) = (() => new Chicken )
+  //def cacophony[T](things: Seq[T]) = things map (_.sound)
+  def biophony[T <: Animal](things: Seq[T]) = things map (_.sound)
+
+  biophony(Seq(new Chicken, new Bird))
+  val flock = List(new Bird, new Bird)
+  var endList = new Chicken :: flock
+
+  println(endList)
+  var endList2 = new Animal :: flock
+  println(endList2)
+
+  def count(l: List[_]) = l.size
+  println("size :" + count(endList2))
+
+  def drop1(l: List[_]) = l.tail
+  def drop2(l: List[T forSome { type T }]) = l.tail
+
+  def hashcodes(l: Seq[_ <: AnyRef]) = l map (_.hashCode)
+  hashcodes(Seq("one", "two", "three"))
 }
+
