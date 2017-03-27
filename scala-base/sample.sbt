@@ -3,20 +3,18 @@ name := "scala computing"
 version := "1.0"
  
 scalaVersion := "2.11.8"
- 
+
 scalacOptions ++= Seq(
-  "-deprecation",
-  "-encoding", "UTF-8",
-  "-feature",
   "-target:jvm-1.8",
+  "-encoding", "UTF-8",
   "-unchecked",
-  "-Ywarn-adapted-args",
+  "-deprecation",
+  "-Xfuture",
+  "-Yno-adapted-args",
   "-Ywarn-dead-code",
   "-Ywarn-numeric-widen",
-  "-Ywarn-unused",
   "-Ywarn-value-discard",
-  "-Xfuture",
-  "-Xlint"
+  "-Ywarn-unused"
 )
 
 libraryDependencies ++= Seq(
