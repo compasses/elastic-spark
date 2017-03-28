@@ -65,6 +65,8 @@ Scala语言，基于JVM，是函数式编程语言。非常的灵活多变，可
 一些有用的命令：
 1.  scalac -Xprint:jvm
 
+IntelliJ中SBT如果需要配置proxy的话：VM要加上参数-Dhttps.proxyHost=xxx -Dhttps.proxyPort=xxx
+
 一些比较好的在线资源：
 1. [Scala 课堂!](https://twitter.github.io/scala_school/zh_cn/index.html)
 2. [Scalac](http://blog.scalac.io/tags/Scala/)

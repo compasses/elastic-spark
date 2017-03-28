@@ -19,6 +19,7 @@ package org.example
  */
 
 import org.apache.flink.streaming.api.scala._
+import org.apache.flink.streaming.api.windowing.time.Time
 
 /**
  * This example shows an implementation of WordCount with data from a text socket. 
@@ -44,27 +45,59 @@ import org.apache.flink.streaming.api.scala._
  */
 object SocketTextStreamWordCount {
 
+  def windowdStream(env: StreamExecutionEnvironment): Unit = {
+
+    val socketStream = env.socketTextStream("localhost", 9000)
+
+    // implement word count
+
+    val wordsStream = socketStream.flatMap(value => value.split("\\s+")).map(value => (value,1))
+
+    val keyValuePair = wordsStream.keyBy(0).timeWindow(Time.seconds(15))
+
+    val countStream = keyValuePair.sum(1)
+
+    countStream.print()
+
+    env.execute()
+  }
+
   def main(args: Array[String]) {
     if (args.length != 2) {
       System.err.println("USAGE:\nSocketTextStreamWordCount <hostname> <port>")
-      return
     }
 
-    val hostName = args(0)
-    val port = args(1).toInt
+    val hostName = "10.128.165.206"
+    val port = 9000
 
     val env = StreamExecutionEnvironment.getExecutionEnvironment
 
     //Create streams for names and ages by mapping the inputs to the corresponding objects
-    val text = env.socketTextStream(hostName, port)
-    val counts = text.flatMap { _.toLowerCase.split("\\W+") filter { _.nonEmpty } }
-      .map { (_, 1) }
-      .keyBy(0)
-      .sum(1)
+//    val text = env.socketTextStream(hostName, port)
+//
+//    val counts = text.flatMap { _.toLowerCase.split("\\W+") filter { _.nonEmpty } }
+//      .map { (_, 1) }
+//      .keyBy(0)
+//      .sum(1)
+//
+//    counts print
+//
+//    env.execute("Scala SocketTextStreamWordCount Example")
 
-    counts print
+    // use windowd stream
+    val socketStream = env.socketTextStream("10.128.165.206", 9000)
 
-    env.execute("Scala SocketTextStreamWordCount Example")
+    // implement word count
+
+    val wordsStream = socketStream.flatMap(value => value.split("\\s+")).map(value => (value,1))
+
+    val keyValuePair = wordsStream.keyBy(0).timeWindow(Time.seconds(15))
+
+    val countStream = keyValuePair.sum(1)
+
+    countStream.print()
+
+    env.execute()
   }
 
 }

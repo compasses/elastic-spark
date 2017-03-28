@@ -32,7 +32,6 @@ import org.apache.flink.api.scala._
  */
 object WordCount {
   def main(args: Array[String]) {
-
     // set up the execution environment
     val env = ExecutionEnvironment.getExecutionEnvironment
 
@@ -48,6 +47,5 @@ object WordCount {
 
     // execute and print result
     counts.print()
-
   }
 }
