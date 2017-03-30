@@ -7,6 +7,7 @@ trait Interface {
   val name: String
   def sayMyName = name+"!"
 }
+
 case object Implementation extends Interface {
   override val name = "test"
 }
@@ -15,4 +16,36 @@ case object Implementation extends Interface {
 object test extends App {
   println(Implementation.name)
   println(Implementation.sayMyName)
+}
+
+trait Logger {
+  def log(msg: String)
+  def warn(msg: String) {log("WARN " + msg)}
+}
+
+trait TimestampLogger extends Logger {
+  abstract override def log(msg: String) {
+    super.log(new java.util.Date() + " " + msg)
+  }
+}
+
+abstract class Account {
+  var banlance : Int;
+}
+
+class SaveAccount extends Account with Logger {
+  var banlance: Int = 10;
+
+  def output(): Unit = {
+    warn("barabatr")
+  }
+
+  override def log(msg: String) {
+    println(msg)
+  }
+}
+
+object SaveAccount extends App {
+  val saveCount = new SaveAccount with TimestampLogger
+  saveCount.output()
 }
