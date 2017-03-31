@@ -9,10 +9,11 @@ import sun.text.resources.no.CollationData_no
 
 import sys.process._
 
+sealed trait List[+A]
 case object Nil extends List[Nothing]
 case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
-sealed trait List[+A] {
+object List {
   def sum(ints: List[Int]): Int = ints match {
     case Nil => 0
     case Cons(x, xs) => x + sum(xs)
@@ -60,17 +61,17 @@ sealed trait List[+A] {
     case Cons(h, t) => Cons(h, init(t))
   }
 
-  def init2[A](l: List[A]): List[A] = {
-    import collection.mutable.ListBuffer
-    val buf = new ListBuffer[A]
-    def go(cur: List[A]): List[A] = cur match {
-      case Nil => sys.error("init of empty list")
-      case Cons(_, Nil) => List(buf.toList: _*)
-      case Cons(h, t) => buf += h; go(t)
-    }
-
-    go(l)
-  }
+//  def init2[A](l: List[A]): List[A] = {
+//    import collection.mutable.ListBuffer
+//    val buf = new ListBuffer[A]
+//    def go(cur: List[A]): List[A] = cur match {
+//      case Nil => sys.error("init of empty list")
+//      case Cons(_, Nil) => List(buf.toList: _*)
+//      case Cons(h, t) => buf += h; go(t)
+//    }
+//
+//    go(l)
+//  }
 
   def dropWhile2[A](as: List[A])(f: A => Boolean): List[A] =
     as match {
@@ -166,16 +167,16 @@ sealed trait List[+A] {
   def filter_1[A](l: List[A])(f: A => Boolean): List[A] =
     foldRight(l, Nil:List[A])((h,t) => if (f(h)) Cons(h,t) else t)
 
-  def filter_2[A](l: List[A])(f: A => Boolean): List[A] = {
-    val buf = new collection.mutable.ListBuffer[A]
-    def go(l: List[A]): Unit = l match {
-      case Nil => ()
-      case Cons(h,t) => if (f(h)) buf += h; go(t)
-    }
-
-    go(l)
-    List(buf.toList: _*) // converting from the standard Scala list to the list we've defined here
-  }
+//  def filter_2[A](l: List[A])(f: A => Boolean): List[A] = {
+//    val buf = new collection.mutable.ListBuffer[A]
+//    def go(l: List[A]): Unit = l match {
+//      case Nil => ()
+//      case Cons(h,t) => if (f(h)) buf += h; go(t)
+//    }
+//
+//    go(l)
+//    List(buf.toList: _*) // converting from the standard Scala list to the list we've defined here
+//  }
 
   def filter_my[A](l: List[A])(f: A => Boolean): List[A] =
     l match {

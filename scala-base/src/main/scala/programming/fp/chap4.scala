@@ -88,14 +88,14 @@ object testOption {
 
   def lift[A,B](f: A => B): Option[A] => Option[B] = _ map f
 
-  def map2_1[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =
+  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =
     a flatMap (aa => b map (bb => f(aa, bb)))
 
-  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = (a, b) match {
-    case (None, _) => None
-    case (_, None) => None
-    case (x, y)    => Some(f(a, b))
-  }
+//  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = (a, b) match {
+//    case (None, _) => None
+//    case (_, None) => None
+//    case (x, y)    => Some(f(a.getOrElse(None), b.getOrElse(None)))
+//  }
 
   def insuranceRateQuote(age: Int, numberOfSpeedingTickets: Int): Double = {
     1.0
