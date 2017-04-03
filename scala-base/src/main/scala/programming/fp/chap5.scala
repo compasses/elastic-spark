@@ -125,6 +125,7 @@ sealed trait Stream[+A] {
     }
   }
 
+
   }
 
 case object Empty extends Stream[Nothing]
