@@ -227,6 +227,10 @@ object List {
 }
 
 object chap3 extends App {
+  val testleft2 = List.foldLeft(List(1,2,3), 0)((a,b) => a+b)
+
+  println("testleft2 is " + testleft2)
+
   val ex1: List[Double] = Nil
   val ex2: List[Int] = Cons(1, Nil)
   val ex3: List[String] = Cons("a", Cons("b", Nil))
@@ -247,7 +251,6 @@ object chap3 extends App {
   val test = List.foldRight(List(1,2,3), Nil:List[Int])(Cons(_,_))
   val testleft = List.foldLeft(List(1,2,3), Nil:List[Int])_
   val test3 = List[Int]()
-
   System.out.println("result list is " + ex12)
   System.out.println("length is " + List.length(xs))
   System.out.println("result sum list is " + List.sum2(xs))
