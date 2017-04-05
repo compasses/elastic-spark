@@ -1,4 +1,4 @@
-package programming.fp;
+package programming.fp_part1;
 
 /**
  * Created by I311352 on 3/28/2017.

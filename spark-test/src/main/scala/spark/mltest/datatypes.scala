@@ -1,4 +1,3 @@
-package spark.mltest
 
 /**
   * Created by I311352 on 3/31/2017.

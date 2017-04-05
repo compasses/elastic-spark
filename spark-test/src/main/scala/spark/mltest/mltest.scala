@@ -1,4 +1,4 @@
-package spark
+package spark.mltest
 
 import org.apache.spark.ml.feature.LabeledPoint
 import org.apache.spark.sql.SQLContext

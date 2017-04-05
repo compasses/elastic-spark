@@ -1,6 +1,6 @@
-package programming.fp
+package programming.fp_part1
 
-import programming.fp.List._
+import programming.fp_part1.List._
 
 /**
   * Created by I311352 on 3/29/2017.

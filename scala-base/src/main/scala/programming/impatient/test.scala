@@ -77,5 +77,20 @@ object test extends App{
 //  }
 
   println(indexes("Mississippi"))
-
 }
+
+trait Reader{
+  type Contents
+  def Read(fileName: String): Contents
+}
+
+trait Reader2[C] {
+  def Read(fileName: String): C
+}
+
+
+//trait Iterable2[E, C[_]] {
+//  def iterator(): Iterable2[E]
+//  def build[F](): C[F]
+//  def map[F](f: (E) => F): C[F]
+//}

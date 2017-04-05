@@ -1,4 +1,4 @@
-package programming.fp
+package programming.fp_part1
 
 import scala.util.hashing.Hashing.Default
 

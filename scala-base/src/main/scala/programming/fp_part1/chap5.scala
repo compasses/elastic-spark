@@ -1,4 +1,4 @@
-package programming.fp
+package programming.fp_part1
 
 /**
   * Created by I311352 on 3/31/2017.
@@ -124,8 +124,34 @@ sealed trait Stream[+A] {
       case None => empty
     }
   }
-  val fibsViaUnfold =
-    unfold((0,1)) { case (f0,f1) => Some((f0,(f1,f0+f1))) }
+//  def mapViaUnfold[B](f: A => B): Stream[B] =
+//    unfold(this) {
+//      case Cons(h,t) => Some((f(h()), t()))
+//      case _ => None
+//    }
+//
+//  def takeViaUnfold(n: Int): Stream[A] =
+//    unfold((this,n)) {
+//      case (Cons(h,t), 1) => Some((h(), (empty, 0)))
+//      case (Cons(h,t), n) if n > 1 => Some((h(), (t(), n-1)))
+//      case _ => None
+//    }
+//
+//  def takeWhileViaUnfold(f: A => Boolean): Stream[A] =
+//    unfold(this) {
+//      case Cons(h,t) if f(h()) => Some((h(), t()))
+//      case _ => None
+//    }
+//
+//  def zipWith[B,C](s2: Stream[B])(f: (A,B) => C): Stream[C] =
+//    unfold((this, s2)) {
+//      case (Cons(h1,t1), Cons(h2,t2)) =>
+//        Some((f(h1(), h2()), (t1(), t2())))
+//      case _ => None
+//    }
+
+//  val fibsViaUnfold =
+//    unfold((0,1)) { case (f0,f1) => Some((f0,(f1,f0+f1))) }
 
   def fromViaUnfold(n: Int) =
     unfold(n)(n => Some((n,n+1)))
@@ -134,7 +160,7 @@ sealed trait Stream[+A] {
     unfold(a)(_ => Some((a,a)))
 
   // could also of course be implemented as constant(1)
-  val onesViaUnfold = unfold(1)(_ => Some((1,1)))
+  //val onesViaUnfold = unfold(1)(_ => Some((1,1)))
 
 //  def zipWith[B,C](s2: Stream[B])(f: (A,B) => C): Stream[C] =
 //    unfold((this, s2)) {
@@ -163,6 +189,19 @@ sealed trait Stream[+A] {
 //    case (h,h2) => h == h2
 //  }
 
+  def tails: Stream[Stream[A]] =
+    unfold(this) {
+      case Empty => None
+      case s => Some((s, s drop 1))
+    } append Stream(empty)
+
+  def scanRight[B](z: B)(f: (A, => B) => B): Stream[B] =
+    foldRight((z, Stream(z)))((a, p0) => {
+      // p0 is passed by-name and used in by-name args in f and cons. So use lazy val to ensure only one evaluation...
+      lazy val p1 = p0
+      val b2 = f(a, p1._1)
+      (b2, cons(b2, p1._2))
+    })._2
 
   }
 
@@ -170,6 +209,7 @@ case object Empty extends Stream[Nothing]
 case class SCons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
 
 object Stream {
+
   def cons[A](hd: => A, tl: => Stream[A]): Stream[A] = {
     lazy val head = hd
     lazy val tail = tl
@@ -239,5 +279,6 @@ object chap5 extends App {
   val fibt = Stream.fibs()
   println(fibt.take(15).toList)
 
-
+  val list = Stream(1,2,3).scanRight(0)(_ + _).toList
+  println("List is " + list)
 }
