@@ -14,6 +14,8 @@ object word2vec extends App {
   val sc = new SparkContext(conf)
 
   val input = sc.textFile(text8).map(line => line.split(" ").toSeq)
+  println("line data" + input.take(10).toList)
+
   val word2vec = new Word2Vec()
 
   val model = word2vec.fit(input)
