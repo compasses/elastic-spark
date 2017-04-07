@@ -2,6 +2,8 @@ package spark.mltest
 
 import breeze.linalg.DenseVector
 import org.apache.spark.ml.regression.LinearRegression
+import org.apache.spark.mllib.linalg.Vectors
+import org.apache.spark.mllib.regression.{LabeledPoint, LinearRegressionWithSGD}
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
@@ -13,7 +15,7 @@ object LRExample  extends App {
 
   val numData = 10 // Number of data points
   val D = 2 // Numer of dimensions
-  val ITERATIONS = 1000
+  val ITERATIONS = 100
 
   var w = new DenseVector(Array(1.0, 1.0))
   println("Initial w: " + w)
@@ -29,6 +31,7 @@ object LRExample  extends App {
     val gradient = rdd.map(dataPoint => {
       val predictVal = (dataPoint.x.t * w)
       val diff = predictVal - dataPoint.y // h(x)- y
+      println("Diff is " + diff)
       val costForRow = diff * diff
       cost += costForRow
       val diffVector = new DenseVector(Array.fill[Double](D)(diff))
@@ -44,6 +47,7 @@ object LRExample  extends App {
     println("next w is " + w)
   }
 
+
   println("Final w: " + w)
 }
 
@@ -52,10 +56,20 @@ object LROfSpark extends App {
   val conf = new SparkConf().setAppName("Spark LRExample").setMaster("local[2]")
   val sc = new SparkContext(conf)
 
-
   val data = DataPoint.generateData(10)
-  val rdd = sc.makeRDD(data)
 
- // val lrModel = lr.fit(rdd)
+  val labeledPoints = data.map(value=> {
+    val data = value.x.data
+    val label = value.y
+    new LabeledPoint(label, Vectors.dense(data))
+  })
+
+  val labeledPointRDD = sc.makeRDD(labeledPoints, 2)
+  val initialVec = Vectors.dense(Array(1.0, 1.5))
+
+  val model = LinearRegressionWithSGD.train(labeledPointRDD, 10, 0.001, 1.0, initialVec)
+  println(model.intercept+ "  "+model.weights)
+
+  //val lrModel = lr.fit(rdd)
 
 }

@@ -3,11 +3,13 @@ package programming.fp_part2
 import java.util.concurrent.{Callable, CountDownLatch, ExecutorService}
 import java.util.concurrent.atomic.AtomicReference
 
+import programming.fp_part2.chap7_orignal.Actor
+
 
 /**
   * Created by I311352 on 4/6/2017.
   */
-sealed trait Future[A] {
+sealed trait Future[+A] {
   private[fp_part2] def apply(k: A => Unit): Unit
   type Par[+A] = ExecutorService => Future[A]
 
@@ -34,26 +36,26 @@ sealed trait Future[A] {
   def eval(es: ExecutorService)(r: => Unit): Unit =
     es.submit(new Callable[Unit] { def call = r })
 
-  def map2[A,B,C](p1: Par[A], p2: Par[B])(f: (A, B) => C): Par[C] = {
-    es => new Future[C] {
-      override private[fp_part2] def apply(cb: (C) => Unit) = {
-        var ar : Option[A] = None
-        var br : Option[B] = None
-        var combiner = Actor[Either[A, B]](es) {
-          case Left(a) => br match {
-            case None => ar = Some(a)
-            case Some(b) => eval(es)(cb(f(a, b)))
-          }
-          case Right(b) => ar match {
-            case None => br = Some(b)
-            case Some(a) => eval(es)(cb(f(a, b)))
-          }
-        }
-        p1(es)(a => combiner ! Left(a))
-        p2(es)(b => combiner ! Right(b))
-      }
-    }
-  }
+//  def map2[A,B,C](p1: Par[A], p2: Par[B])(f: (A, B) => C): Par[C] = {
+//    es => new Future[C] {
+//      override private[fp_part2] def apply(cb: (C) => Unit) = {
+//        var ar : Option[A] = None
+//        var br : Option[B] = None
+//        var combiner = Actor[Either[A, B]](es) {
+//          case Left(a) => br match {
+//            case None => ar = Some(a)
+//            case Some(b) => eval(es)(cb(f(a, b)))
+//          }
+//          case Right(b) => ar match {
+//            case None => br = Some(b)
+//            case Some(a) => eval(es)(cb(f(a, b)))
+//          }
+//        }
+//        p1(es)(a => combiner ! Left(a))
+//        p2(es)(b => combiner ! Right(b))
+//      }
+//    }
+//  }
 
 }
 

@@ -20,7 +20,7 @@ object word2vec extends App {
 
   val model = word2vec.fit(input)
 
-  val synonyms = model.findSynonyms("and", 5)
+  val synonyms = model.findSynonyms("good", 5)
 
   for((synonym, cosineSimilarity) <- synonyms) {
     println(s"$synonym $cosineSimilarity")
