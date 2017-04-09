@@ -36,7 +36,6 @@ public class SimpleApp {
         });
 
         int totoalLine = hdfsData.map(s->s.length()).reduce((a, b) -> a+b);
-
         JavaPairRDD<String, Integer> pairs = hdfsData.mapToPair(s -> new Tuple2(s, 1));
         JavaPairRDD<String, Integer> counts = pairs.reduceByKey((a, b) -> a + b);
 

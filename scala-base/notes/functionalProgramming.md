@@ -6,7 +6,7 @@ Scala不同，它不再是那种冯诺依曼体系结构的编程思想了，更
 
 [Functional Programming](https://en.wikipedia.org/wiki/Functional_programming)是个很大的topic，它的理论基础是[Lambda calculus](https://en.wikipedia.org/wiki/Lambda_calculus)，Lambda calculus是一种数学计算抽象。跟上面所说那样，Lambda calculus不会关注内存、变量、赋值等语句了，而更多的是各种函数算子的变换。研究生还上过这个计算理论课，可惜当时没有学习一门函数式编程语言。所以函数式编程可以理解为面向函数的编程。就像Java一样，面向对象的编程。函数式编程的理论基础便是Lambda calculus，[这里](https://github.com/txyyss/Lambda-Calculus/releases)有对其比较清晰的介绍。
 
-举几个例子。
+举几个例子:
 
 例如数学里面的函数二元变量的函数：f(x, y) = x\*x + y\*y，可以抽象表示成：x->(y->x\*x+y\*y)，那么一次调用(x->(y->x\*x+y\*y))(3)(4)，就如同调用f(3, 4)。所以可以把任意的多元函数转变成一元的高阶函数，这个过程也要Currying。例如代码：
 
