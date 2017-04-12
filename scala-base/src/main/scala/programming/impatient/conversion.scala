@@ -25,12 +25,12 @@ object conversion extends App {
 
   println(ll)
 
-  def map2[B, That](f: A => B)(implicit bf: CanBuildFrom[Repr, B, That]): That = {
-    val builder = bf()
-    val iter = iterator()
-    while (iter.hasNext) builder += f(iter.next())
-
-    builder.result()
-  }
+//  def map2[B, That](f: A => B)(implicit bf: CanBuildFrom[Repr, B, That]): That = {
+//    val builder = bf()
+//    val iter = iterator()
+//    while (iter.hasNext) builder += f(iter.next())
+//
+//    builder.result()
+//  }
 
 }

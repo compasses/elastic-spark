@@ -19,6 +19,7 @@ case class StringProcessedMsg(words: Integer)
 class StringCounterActor extends Actor {
   def receive = {
     case ProcessStringMsg(string) => {
+      println("got word line " + string)
       val wordsInLine = string.split(" ").length
       sender ! StringProcessedMsg(wordsInLine)
     }
@@ -51,6 +52,7 @@ class WordCountActor(filename: String) extends Actor {
       }
     }
     case StringProcessedMsg(words) => {
+      println("got words " + words)
       result += words
       linesProcessed += 1
       if (linesProcessed == totalLines) {
@@ -74,11 +76,13 @@ object Sample extends App {
     val system = ActorSystem("System")
     val actor = system.actorOf(Props(new WordCountActor("C:\\AnyWhere\\Docker File\\apache2")))
     implicit val timeout = Timeout(25 seconds)
-    val future = actor ? StartProcessFileMsg()
-    future.map { result =>
-      println("Total number of words " + result)
-      system.terminate()
-    }
+    val future = actor ! StartProcessFileMsg()
+
+    println("last thing...")
+//    future.map { result =>
+//      println("Total number of words " + result)
+//      system.terminate()
+//    }
   }
 }
 

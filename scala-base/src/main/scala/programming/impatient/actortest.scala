@@ -1,6 +1,7 @@
 package programming.impatient
 
-import akka.actor.Actor
+import akka.actor.{Actor, ActorSystem, Props}
+import programming.actors.WordCountActor
 
 
 /**
@@ -10,11 +11,17 @@ import akka.actor.Actor
 class HiActor extends Actor {
   def receive = {
     case "Hi" => println("Hello")
+    case _ => println("No recognized msg")
   }
-
 }
 
 object actortest extends App {
-  val actor1 = new HiActor
-  actor1.preStart()
+  val system = ActorSystem("System")
+  val actor = system.actorOf(Props(new HiActor))
+  actor ! "Hi"
+  actor ! "Yes it's right"
+//  future.map { result =>
+//    println("Total number of words " + result)
+//    system.terminate()
+//  }
 }

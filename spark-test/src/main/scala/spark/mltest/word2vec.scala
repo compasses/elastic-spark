@@ -16,11 +16,17 @@ object word2vec extends App {
   val input = sc.textFile(text8).map(line => line.split(" ").toSeq)
   println("line data" + input.take(10).toList)
 
+  val input2 = sc.parallelize(List("Assigns a group ID to all the jobs started by this thread until the group ID is set to a")
+    .map(line=>line.split(" ").toSeq))
+  println("line data" + input2.take(10).toList)
+
   val word2vec = new Word2Vec()
+  word2vec.setMinCount(1)
 
-  val model = word2vec.fit(input)
+  val model = word2vec.fit(input2)
 
-  val synonyms = model.findSynonyms("good", 5)
+  println(model.transform("to"))
+  val synonyms = model.findSynonyms("a", 5)
 
   for((synonym, cosineSimilarity) <- synonyms) {
     println(s"$synonym $cosineSimilarity")
