@@ -1,5 +1,6 @@
 package programming.actors
 
+
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 
 /**
@@ -83,6 +84,9 @@ object Sample extends App {
 //      println("Total number of words " + result)
 //      system.terminate()
 //    }
+    import scala.reflect.runtime.universe._
+
+    def checkType[A: TypeTag](a: A, t: Type) = typeOf[A] <:< t
   }
 }
 

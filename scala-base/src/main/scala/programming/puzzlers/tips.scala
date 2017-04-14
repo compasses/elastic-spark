@@ -23,6 +23,9 @@ object tips extends App {
 
   println(rr)
   //assert(rr == 6857) // 1 ms
+}
 
-
+object ListTests1 extends App {
+  val numbers: List[Int] = (1 to 10).toList
+  println(s"numbers: $numbers")
 }

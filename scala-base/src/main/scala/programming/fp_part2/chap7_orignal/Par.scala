@@ -136,7 +136,7 @@ object Par {
   }
 }
 
-object Examples {
+object Examples extends App {
   import Par._
   def sum(ints: IndexedSeq[Int]): Int = // `IndexedSeq` is a superclass of random-access sequences like `Vector` in the standard library. Unlike lists, these sequences provide an efficient `splitAt` method for dividing them into two parts at a particular index.
     if (ints.size <= 1)
@@ -145,4 +145,6 @@ object Examples {
       val (l,r) = ints.splitAt(ints.length/2) // Divide the sequence in half using the `splitAt` function.
       sum(l) + sum(r) // Recursively sum both halves and add the results together.
     }
+
+  println("Sum" + sum(Array(1, 2, 3,4)))
 }
