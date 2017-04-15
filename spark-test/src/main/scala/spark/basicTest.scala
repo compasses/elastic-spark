@@ -1,6 +1,7 @@
 package spark
 
-import org.apache.spark.SparkContext
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.{SparkConf, SparkContext}
 
 /**
   * Created by I311352 on 4/11/2017.
@@ -29,5 +30,19 @@ object basicTest  extends App {
   println(re2.getNumPartitions)
 
   sc.parallelize(data).reduceByKey((x, y) => x + y)
+
+}
+
+object wordCount extends App {
+  val conf = new SparkConf().setAppName("Simple Application").setMaster("local")
+  val spark = SparkSession.builder.config(conf).appName("JavaWordCount").getOrCreate
+  val sc = spark.sparkContext
+
+  val lines = sc.textFile("hdfs://localhost:9000/input/resources")
+
+val sqew = lines.flatMap(x=>x.split(" ")).map(y=>(y,1)).reduceByKey(_+_)
+//
+ println(sqew.take(10).toList)
+
 
 }
