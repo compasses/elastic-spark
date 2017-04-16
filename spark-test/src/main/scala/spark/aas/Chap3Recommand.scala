@@ -2,6 +2,7 @@ package spark.aas
 
 import org.apache.spark.sql.functions._
 import org.apache.spark.SparkConf
+import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 import org.uncommons.maths.statistics.DataSet
 
@@ -65,4 +66,31 @@ object Chap3Recommand extends App {
     }.collect().toMap
   }
 
+  class Recommender(private val spark: SparkSession) {
+    import spark.implicits._
+    def model(rawUserArtistData: Dataset[String],
+             rawArtistData: Dataset[String],
+             rawArtistAlias: Dataset[String]): Unit = {
+      val bArtistAlias = spark.sparkContext.broadcast(buildArtistAlias(rawArtistAlias))
+      val trainData = buildCounts(rawUserArtistData, bArtistAlias).cache()
+
+    }
+    def buildCounts(
+                     rawUserArtistData: Dataset[String],
+                     bArtistAlias: Broadcast[Map[Int,Int]]): DataFrame = {
+      rawUserArtistData.map { line =>
+        val Array(userID, artistID, count) = line.split(' ').map(_.toInt)
+        val finalArtistID = bArtistAlias.value.getOrElse(artistID, artistID)
+        (userID, finalArtistID, count)
+      }.toDF("user", "artist", "count")
+    }
+
+//    def buildCounts(rawUserArtistData: Dataset[String], bArtistAlias: Broadcast[ Map[Int, Int]]):DataFrame = {
+//      rawUserArtistData.map{
+//        line =>
+//        val Array(userId, artistId, count) = line.split(' ').map(_.toInt)
+//          val
+//      }.t
+//  }
+}
 }
