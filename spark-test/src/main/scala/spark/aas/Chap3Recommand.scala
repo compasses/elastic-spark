@@ -3,14 +3,17 @@ package spark.aas
 import org.apache.spark.sql.functions._
 import org.apache.spark.SparkConf
 import org.apache.spark.broadcast.Broadcast
+import org.apache.spark.ml.recommendation.{ALS, ALSModel}
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 import org.uncommons.maths.statistics.DataSet
+
+import scala.util.Random
 
 /**
   * Created by i311352 on 15/04/2017.
   */
 object Chap3Recommand extends App {
-  val conf = new SparkConf().setAppName("ChapIntro").setMaster("local")
+  val conf = new SparkConf().setAppName("ChapIntro").setMaster("spark://10.128.165.206:7077")
 
   val spark = SparkSession.builder
     .appName("Intro").config(conf)
@@ -74,7 +77,53 @@ object Chap3Recommand extends App {
       val bArtistAlias = spark.sparkContext.broadcast(buildArtistAlias(rawArtistAlias))
       val trainData = buildCounts(rawUserArtistData, bArtistAlias).cache()
 
+      val model = new ALS().
+        setSeed(Random.nextLong()).
+        setImplicitPrefs(true).
+        setRank(10).
+        setRegParam(0.01).
+        setAlpha(1.0).
+        setMaxIter(5).
+        setUserCol("user").
+        setItemCol("artist").
+        setRatingCol("count").
+        setPredictionCol("prediction").
+        fit(trainData)
+      trainData.unpersist()
+
+      model.userFactors.select("features").show(truncate = false)
+
+      val userID = 2093760
+
+      val existingArtistIDs = trainData.
+        filter($"user" === userID).
+        select("artist").as[Int].collect()
+
+      val artistByID = buildArtistById(rawArtistData)
+
+      artistByID.filter($"id" isin (existingArtistIDs:_*)).show()
+
+      val topRecommendations = makeRecommendations(model, userID, 5)
+      topRecommendations.show()
+
+      val recommendedArtistIDs = topRecommendations.select("artist").as[Int].collect()
+
+      artistByID.filter($"id" isin (recommendedArtistIDs:_*)).show()
+
+      model.userFactors.unpersist()
+      model.itemFactors.unpersist()
     }
+
+    def makeRecommendations(model: ALSModel, userId: Int, howMany: Int) : DataFrame = {
+      val toRecommend = model.itemFactors.
+        select($"id".as("artist")).
+        withColumn("user", lit(userId))
+        model.transform(toRecommend).
+        select("artist", "prediction").
+        orderBy($"prediction".desc).
+        limit(howMany)
+    }
+
     def buildCounts(
                      rawUserArtistData: Dataset[String],
                      bArtistAlias: Broadcast[Map[Int,Int]]): DataFrame = {
@@ -84,13 +133,5 @@ object Chap3Recommand extends App {
         (userID, finalArtistID, count)
       }.toDF("user", "artist", "count")
     }
-
-//    def buildCounts(rawUserArtistData: Dataset[String], bArtistAlias: Broadcast[ Map[Int, Int]]):DataFrame = {
-//      rawUserArtistData.map{
-//        line =>
-//        val Array(userId, artistId, count) = line.split(' ').map(_.toInt)
-//          val
-//      }.t
-//  }
 }
 }

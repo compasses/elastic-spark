@@ -48,4 +48,15 @@ class SaveAccount extends Account with Logger {
 object SaveAccount extends App {
   val saveCount = new SaveAccount with TimestampLogger
   saveCount.output()
+
+  var any: Any = _
+  println (any match {
+    case "scala" | "java" => "string"
+    case i: Int if i > 10 => "int > 10"
+    //case `str` => "abcdef"
+    case _: String => "string type"
+    case hd :: tail => "List"
+    case any => any
+    case _ => "other"
+  })
 }
