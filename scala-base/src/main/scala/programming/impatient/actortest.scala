@@ -11,6 +11,7 @@ import programming.actors.WordCountActor
 class HiActor extends Actor {
   def receive = {
     case "Hi" => println("Hello")
+          sender ! "back"
     case _ => println("No recognized msg")
   }
 }
@@ -18,8 +19,11 @@ class HiActor extends Actor {
 object actortest extends App {
   val system = ActorSystem("System")
   val actor = system.actorOf(Props(new HiActor))
-  actor ! "Hi"
+  val back = actor ! "Hi"
+  println(back)
   actor ! "Yes it's right"
+  while (true)
+    actor ! "Hi"
 //  future.map { result =>
 //    println("Total number of words " + result)
 //    system.terminate()

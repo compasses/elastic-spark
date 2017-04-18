@@ -24,7 +24,8 @@ libraryDependencies ++= Seq(
   "org.apache.spark" % "spark-streaming_2.11" % "2.1.0" % "compile",
   "org.apache.spark" % "spark-mllib_2.11" % "2.1.0" % "compile",
   "com.typesafe.akka" %% "akka-actor" % akkaVersion % "compile",
-  "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "compile"
+  "com.typesafe.akka" %% "akka-remote" % akkaVersion % "compile",
+"com.typesafe.akka" %% "akka-testkit" % akkaVersion % "compile"
 
 )
 
