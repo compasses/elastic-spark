@@ -12,6 +12,8 @@ import java.util.concurrent.{ConcurrentHashMap, ForkJoinPool, LinkedBlockingDequ
 import scala.concurrent.{ExecutionContext, Future}
 import java.net.URL
 
+import akka.event.Logging
+
 /**
   * Created by I311352 on 4/18/2017.
   */

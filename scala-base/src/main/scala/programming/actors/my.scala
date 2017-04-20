@@ -1,7 +1,7 @@
 package programming.actors
 
 
-import akka.actor.{Actor, ActorRef, ActorSystem, Props}
+import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 
 /**
   * Created by I311352 on 4/10/2017.
@@ -90,6 +90,65 @@ object Sample extends App {
   }
 }
 
+case class NumSeq(num:Seq[Int])
+
+
+class CountActor1 extends Actor with ActorLogging {
+
+  def receive = {
+    case nums:Seq[Int] => {
+      log.info("My path is " + self.path)
+      log.info(" parent is" + context.parent.path)
+
+      log.info("Start counting")
+      val rest = nums.foldLeft(0)(_+_)
+      sender ! rest
+    }
+    case _ => log.info("Nothing got...")
+  }
+}
+
+class SumCountActor extends Actor with ActorLogging {
+  // private
+  val countActor = context.actorOf(Props[CountActor1], "count-actor")
+  private var sum = 0;
+
+  def receive = {
+    case "StartCount" => {
+      log.info("My path is " + self.path)
+      log.info("Starting counting")
+    }
+
+    case sq:Seq[Int] => {
+      log.info("My path is " + self.path)
+      log.info(" parent is" + context.parent.path)
+
+      log.info("receive " + sq)
+      Thread.sleep(1)
+      countActor ! sq
+    }
+
+    case re:Int => {
+      sum += re
+      log.info("Got result " + sum)
+    }
+  }
+}
+
 object ActorTest extends App {
+  val system = ActorSystem("counter-system")
+  system.log.info(system.toString)
+
+  val sumActorRef = system.actorOf(Props[SumCountActor], name="sum-actor")
+  //val countActorRef = system.actorOf(Props[CountActor1], name="count-actor")
+
+  //while (true) {
+    sumActorRef ! Seq(1,2,3,4,5)
+    Thread.sleep(2)
+  sumActorRef ! Seq(1,2,3,4,5)
+  sumActorRef ! Seq(1,2,3,4,5)
+
+  //}
 
 }
+
